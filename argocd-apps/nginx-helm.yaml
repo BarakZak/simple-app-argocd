@@ -1,21 +1,29 @@
-apiVersion: argoproj.io/v1alpha1
-  kind: Application
-  metadata:
-    name: nginx-helm
-    namespace: argocd
-  spec:
-    project: default
-    source:
-      repoURL: https://charts.bitnami.com/bitnami
-      chart: nginx
-      targetRevision: 18.2.4
-      helm:
-        valueFiles:
-          - https://raw.githubusercontent.com/BarakZak/simple-app-argocd/main/helm-nginx/values.yaml
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: default
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
+apiVersion: argoproj.io/v1alpha1 
+kind: Application 
+metadata: 
+  name: nginx-helm 
+  namespace: argocd 
+spec: 
+  project: default 
+  source: 
+    repoURL: https://charts.bitnami.com/bitnami 
+    chart: nginx 
+    targetRevision: 18.2.4 
+    helm: 
+      values: | 
+        replicaCount: 2 
+        image: 
+          tag: 1.27.2 
+        service: 
+          type: NodePort 
+          nodePorts: 
+            http: 30084 
+        annotations: 
+          nginx.org/message: "Custom Nginx via ArgoCD" 
+  destination: 
+    server: https://kubernetes.default.svc 
+    namespace: default 
+  syncPolicy: 
+    automated: 
+      prune: true 
+      selfHeal: true 
