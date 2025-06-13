@@ -1,0 +1,9 @@
+replicaCount: 2
+image:
+  tag: 1.27.2
+service:
+  type: NodePort
+  nodePorts:
+    http: 30084
+  annotations:
+    nginx.org/message: "Custom Nginx via ArgoCD"
